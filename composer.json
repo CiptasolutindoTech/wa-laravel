@@ -1,0 +1,21 @@
+{
+    "name": "devlagret/wa-laravel",
+    "description": "Helper for sending wa on laravel via ruang wa and/or wasender, build and designed for all procjecy by ciptasolutido and team",
+    "type": "library",
+    "license": "CC-BY-4.0",
+    "autoload": {
+        "psr-4": {
+            "Devlagret\\WaLaravel\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "devlagret",
+            "email": "sioputra4@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {
+         "guzzlehttp/guzzle": "^7.0.1"
+    }
+}
