@@ -9,7 +9,20 @@ return [
     |
     */
 
-    'wa_api_url' => env('WA_SERVER_API_URL'),
+    'api_url' => env('WA_SERVER_API_URL'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | WA Driver
+    |--------------------------------------------------------------------------
+    |
+    | Wa driver for auth or normal
+    | avaible driver : cipta,ruangwa
+    |
+    */
+
+    'driver' => env('WA_DRIVER','cipta'),
+    'sandbox_driver' => 'cipta',
 
     /*
     |--------------------------------------------------------------------------
@@ -46,6 +59,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Test Message
+    |--------------------------------------------------------------------------
+    |
+    | Default test message
+    |
+    */
+
+    'test_message' => "Test WA ".env('APP_NAME'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Whatsapp app and auth key for wacipta
     |--------------------------------------------------------------------------
     |
@@ -53,8 +77,8 @@ return [
     |
     */
 
-    'wa_app_token' => env('WA_APP_KEY'),
-    'wa_auth_token' => env('WA_AUTH_KEY'),
+    'app_token' => env('WA_APP_KEY'),
+    'auth_token' => env('WA_AUTH_KEY'),
     /*
     |--------------------------------------------------------------------------
     | Whatsapp token for client
@@ -64,6 +88,6 @@ return [
     |
     */
 
-    'disable_wa_client_token' => env('DISABLE_WA_CLIENT_TOKEN',false),
-    'wa_client_token' => env('WA_CLIENT_TOKEN'),
+    'disable_client_token' => env('DISABLE_WA_CLIENT_TOKEN',false),
+    'client_token' => env('WA_CLIENT_TOKEN'),
 ];

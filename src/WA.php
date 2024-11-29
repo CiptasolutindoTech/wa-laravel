@@ -1,97 +1,40 @@
 <?php
-namespace App\Helpers\WA;
+namespace Devlagret\WALaravel;
 
-use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Str;
+use Devlagret\WALaravel\lib\Cipta;
+use Devlagret\WALaravel\lib\RuangWa;
+use Illuminate\Foundation\Inspiring;
 
+
+/**
+ * @method static \Devlagret\WALaravel\lib\Connection to(string $contentType)
+ * @method static \Devlagret\WALaravel\lib\Connection test()
+ * @method static \Devlagret\WALaravel\lib\Connection msg(string $message)
+*
+ * @see \Devlagret\WALaravel\lib\Cipta
+ * @see \Devlagret\WALaravel\lib\Connection
+ * @see \Devlagret\WALaravel\lib\Wasnder
+ */
 
 class WA {
-    protected $to;
-    protected $driver;
-    function __construct($to) {
-        $this->to = $to;
-        $this->driver = env('WA_DRIVER','cipta');
-    }
-    /**
-     * Send mesage
-     *
-     * @param string $message
-     * @return \Illuminate\Http\Client\Response
-     */
-    public function send($message){
-        // return self::phone($phones);
-        $driver = $this->driver??'cipta';
-
-        $connec = new WAConnection(self::phone($this->to),$driver);
-       return $connec->post($message);
-    }
-    /**
-     * Send mesage
-     *
-     * @param string $message
-     * @return \Illuminate\Http\Client\Response
-     */
-    public function msg($message){
-       return $this->send($message);
-    }
-    public function phone($phones){
-        $phones=str_replace('-','',$phones);
-        if(Str::is('+*', $phones)){
-            $phones=str_replace('+','',$phones);
-        }elseif (Str::is('08*', $phones)) {
-            $phones = Str::replaceFirst('0','62', $phones);
-        }
-        if(strlen($phones)<10){
-            throw new \Exception("Phone Number Invalid");
-        }
-        return $phones;
-    }
     /**
      * Set WA driver
      *
      * @param string $driver
-     * @return WA
      */
-    public function driver($driver){
-        $this->driver=$driver;
-       return  $this;
-    }
-    /**
-     * WA Number
-     *
-     * @param mixed $phone
-     * @return WA
-     */
-    public static function to($phone){
-       return  new self($phone);
-    }
-    public static function qr($driver='cipta'){
-        $connec = new WAConnection(null,$driver);
-        return $connec->qr();
-    }
-    /**
-     * Send defaut test mesage to test number
-     * Test number can be configured from environment variable using
-     *
-     * @param string $message
-     * @return \Illuminate\Http\Client\Response
-     */
-    public static function test($message=null){
-        if(is_null($message)){
-            $message="
-            Tes Whatapp Api - ".env('APP_NAME')."
-            Laravel Version - ".app()->version()."
-            PHP Version - ".phpversion()."
-            ";
+    public static function driver($driver){
+        switch ($driver) {
+            case 'cipta':
+                return new Cipta;
+            case 'ruangWa':
+                return new RuangWa;
+            default:
+                return new Cipta;
         }
-       return self::to(env('TEST_PHONE_NUM_OTP'))->send($message);
-    } /**
-    * Send inspiring mesage
-    *
-    * @param string $message
-    * @return \Illuminate\Http\Client\Response
-    */
-   public function inspire(){
-        return self::send(Inspiring::quote());
-   }
+    }
+    public static function __callStatic($method, $parameters)
+    {
+        return self::driver(config('wa.driver','cipta'))->{$method}(...$parameters);
+    }
 }
