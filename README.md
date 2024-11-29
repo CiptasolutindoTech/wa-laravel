@@ -22,7 +22,13 @@ Curently support for laravel 8+ and php 7.3+
         composer require devlagret/wa-laravel
     ```
 
-3. Add api url,secret and auth optionaly you can add default phone number for testing
+3. Publish Assets :
+
+    ```bash
+        php artisan vendor:publish --tag=wa
+    ```
+
+4. Add api url,secret and auth optionaly you can add default phone number for testing
 
     ```txt
         WA_SERVER_API_URL=https://example.com/api
