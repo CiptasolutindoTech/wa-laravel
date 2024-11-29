@@ -36,3 +36,20 @@ Curently support for laravel 8+ and php 7.3+
         WA_AUTH_KEY=xxxxxxx
         TEST_PHONE_NUMBERS=08123456789
     ```
+
+## Usage
+
+Basic usage:
+
+```php
+    use Devlagret\WALaravel\WA; // at the top of the file
+
+    // send message
+    WA::to("08123456789")->msg('Hello');
+    // send default test message
+    WA::to("08123456789")->test();
+    // send message to test number
+    WA::msg('Hello');
+    // send default test message to test number
+    WA::test();
+```

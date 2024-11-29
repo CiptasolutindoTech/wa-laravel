@@ -3,6 +3,7 @@ namespace Devlagret\WALaravel\lib;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
+use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Http;
 
 class Connection {
@@ -49,13 +50,13 @@ class Connection {
         break;
     }
     if(empty(config("wa.{$configName}"))){
-        throw new \Exception('Whatsapp app token cant be empty');
+        throw new \Exception("Whatsapp app token can't be empty");
     }
     return config("wa.{$configName}");
   }
   public function authToken(){
-    if(empty(config('wa.auth_token'))){
-        throw new \Exception('Whatsapp auth token cant be empty');
+    if(empty(config("wa.auth_token"))){
+        throw new \Exception("Whatsapp auth token can't be empty");
     }
     return config('wa.auth_token');
   }
@@ -87,6 +88,9 @@ class Connection {
     }
   }
   protected function post($message){
+        if(empty($this->to)){
+            throw new \Exception("Phone number can't be empty");
+        }
         return HTTP::post($this->sendUrl(),$this->body($message));
   }
   public function qr(){
@@ -164,6 +168,12 @@ public function to($phone){
             $this->to =$this->formatPhone(config("wa.test_numbers"));
         }
        return $this->msg(config('wa.test_message'));
+    }
+    public function inspire(){
+        if(empty($this->to)){
+            $this->to =$this->formatPhone(config("wa.test_numbers"));
+        }
+       return $this->msg(Inspiring::quote());
     }
 
 }
