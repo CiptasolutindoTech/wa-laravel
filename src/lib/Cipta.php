@@ -1,5 +1,5 @@
 <?php
-namespace Devlagret\WALaravel\lib;
+namespace Cst\WALaravel\lib;
 use Illuminate\Support\Facades\Http;
 
 class Cipta extends Connection {

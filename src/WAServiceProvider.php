@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlagret\WALaravel;
+namespace Cst\WALaravel;
 
 use Illuminate\Support\ServiceProvider;
 

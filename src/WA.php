@@ -1,21 +1,21 @@
 <?php
-namespace Devlagret\WALaravel;
+namespace Cst\WALaravel;
 
 use Illuminate\Support\Str;
-use Devlagret\WALaravel\lib\Cipta;
-use Devlagret\WALaravel\lib\RuangWa;
+use Cst\WALaravel\lib\Cipta;
+use Cst\WALaravel\lib\RuangWa;
 use Illuminate\Foundation\Inspiring;
 
 
 /**
- * @method static Devlagret\WALaravel\lib\Connection to(string $contentType)
+ * @method static Cst\WALaravel\lib\Connection to(string $contentType)
  * @method static \Illuminate\Http\Client\Response test()
  * @method static \Illuminate\Http\Client\Response inspire()
  * @method static \Illuminate\Http\Client\Response msg(string $message)
 *
- * @see \Devlagret\WALaravel\lib\Cipta
- * @see \Devlagret\WALaravel\lib\Connection
- * @see \Devlagret\WALaravel\lib\Wasnder
+ * @see \Cst\WALaravel\lib\Cipta
+ * @see \Cst\WALaravel\lib\Connection
+ * @see \Cst\WALaravel\lib\Wasnder
  */
 
 class WA {

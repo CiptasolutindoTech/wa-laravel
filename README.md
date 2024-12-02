@@ -16,10 +16,10 @@ Curently support for laravel 8+ and php 7.3+
         ],
     ```
 
-2. Add ```devlagret/wa-laravel``` to required package in composer json or run in terminal :
+2. Add ```cst/wa-laravel``` to required package in composer json or run in terminal :
 
     ```bash
-        composer require devlagret/wa-laravel
+        composer require cst/wa-laravel
     ```
 
 3. Add api url,secret and auth optionaly you can add default phone number for testing
@@ -42,7 +42,7 @@ Curently support for laravel 8+ and php 7.3+
 Basic usage:
 
 ```php
-    use Devlagret\WALaravel\WA; // at the top of the file
+    use Cst\WALaravel\WA; // at the top of the file
 
     // send message
     WA::to("08123456789")->msg('Hello');

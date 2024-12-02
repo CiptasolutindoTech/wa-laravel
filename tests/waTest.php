@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Devlagret\WALaravel\WA;
+use Cst\WALaravel\WA;
 use Orchestra\Testbench\TestCase;
 use Orchestra\Testbench\Bootstrap\LoadConfiguration;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
@@ -18,7 +18,7 @@ class waTest extends TestCase
     protected function getPackageProviders($app)
     {
         return [
-            'Devlagret\WALaravel\WAServiceProvider',
+            'Cst\WALaravel\WAServiceProvider',
         ];
     }
     protected function getEnvironmentSetUp($app)

@@ -1,5 +1,5 @@
 <?php
-namespace Devlagret\WALaravel\lib;
+namespace Cst\WALaravel\lib;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
