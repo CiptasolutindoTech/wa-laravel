@@ -16,25 +16,25 @@ Curently support for laravel 8+ and php 7.3+
         ],
     ```
 
-2. Add ```devlagret/wa-laravel``` to required package or run :
+2. Add ```devlagret/wa-laravel``` to required package in composer json or run in terminal :
 
     ```bash
         composer require devlagret/wa-laravel
     ```
 
-3. Publish Assets :
-
-    ```bash
-        php artisan vendor:publish --tag=wa
-    ```
-
-4. Add api url,secret and auth optionaly you can add default phone number for testing
+3. Add api url,secret and auth optionaly you can add default phone number for testing
 
     ```txt
         WA_SERVER_API_URL=https://example.com/api
         WA_APP_KEY=xxxx-xxxx-xxxx-xxxx-xxxx
         WA_AUTH_KEY=xxxxxxx
         TEST_PHONE_NUMBERS=08123456789
+    ```
+
+4. Publish Assets if needed:
+
+    ```bash
+        php artisan vendor:publish --tag=wa
     ```
 
 ## Usage

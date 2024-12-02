@@ -135,9 +135,9 @@ public function to($phone){
    */
   public function setDriver($driver)
   {
-    $this->driver = $driver;
-
-    return $this;
+    return tap($this,function() use($driver){
+        $this->driver = trim($driver);
+    });
   }
   /**
      * Send mesage

@@ -8,9 +8,10 @@ use Illuminate\Foundation\Inspiring;
 
 
 /**
- * @method static \Devlagret\WALaravel\lib\Connection to(string $contentType)
- * @method static \Devlagret\WALaravel\lib\Connection test()
- * @method static \Devlagret\WALaravel\lib\Connection msg(string $message)
+ * @method static Devlagret\WALaravel\lib\Connection to(string $contentType)
+ * @method static \Illuminate\Http\Client\Response test()
+ * @method static \Illuminate\Http\Client\Response inspire()
+ * @method static \Illuminate\Http\Client\Response msg(string $message)
 *
  * @see \Devlagret\WALaravel\lib\Cipta
  * @see \Devlagret\WALaravel\lib\Connection
