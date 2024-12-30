@@ -115,7 +115,7 @@ public function to($phone){
         $phones = Str::replaceFirst('0','62', $phones);
     }
     if(strlen($phones)<10){
-        throw new \Exception("Phone Number Invalid");
+        throw new \Exception("Phone Number Invalid : {$phones}");
     }
     return $phones;
 }
@@ -175,5 +175,10 @@ public function to($phone){
         }
        return $this->msg(Inspiring::quote());
     }
-
+    public function dev() {
+        return new Development($this);
+    }
+    public function toDev() {
+        return $this->dev();
+    }
 }

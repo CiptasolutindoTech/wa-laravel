@@ -7,7 +7,7 @@
     processIsolation="false" stopOnFailure="false"
 >
     <php>
-        <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
+        <env name="APP_KEY" value="base64:Y2lwdGFzb2x1dGluZG90ZWNodGVhbTppZ25hdGl1cyxkYXZhLHNheXlpZCxhcmth"/>
     </php>
     <testsuites>
         <testsuite name="WA Test">
