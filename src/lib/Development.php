@@ -82,7 +82,7 @@ class Development
             $appDebug = config('app.debug');
             return "----------------------\nApp Name  : $appName\nUrl        : $url\nEnv        : $appEnv\nDebug    : $appDebug\n----------------------";
     }
-    public function formMsg($message,$title = '☠️   Error    ☠️', $stacktrace = null)
+    public function formMsg($message,$title = '🚨❌☠️   Error    ☠️❌🚨', $stacktrace = null)
     {
         $title = FormatMsg::bold($this->title ?? $title);
         $stacktrace = $stacktrace ?? $this->stacktrace;
@@ -126,7 +126,7 @@ class Development
     public function error()
     {
         return tap($this, function ($instance) {
-            $instance->title = config("dev_error_message_title", "☠️ Error ☠️ ");
+            $instance->title = config("dev_error_message_title", "🚨❌☠️   Error    ☠️❌🚨");
         });
     }
     /**
