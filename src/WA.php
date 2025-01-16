@@ -10,11 +10,13 @@ use Illuminate\Foundation\Inspiring;
 /**
  * @method static Cst\WALaravel\lib\Connection to(string $contentType)
  * @method static \Illuminate\Http\Client\Response test()
+ * @method static \Cst\WALaravel\lib\Development dev()
  * @method static \Illuminate\Http\Client\Response inspire()
  * @method static \Illuminate\Http\Client\Response msg(string $message)
 *
  * @see \Cst\WALaravel\lib\Cipta
  * @see \Cst\WALaravel\lib\Connection
+ * @see \Cst\WALaravel\lib\Development
  * @see \Cst\WALaravel\lib\Wasnder
  */
 
@@ -33,6 +35,12 @@ class WA {
             default:
                 return new Cipta;
         }
+    }
+    public static function ruangWa() {
+        return new RuangWa;
+    }
+    public static function cipta() {
+        return new Cipta;
     }
     public static function __callStatic($method, $parameters)
     {
