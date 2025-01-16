@@ -62,7 +62,7 @@ class waTest extends TestCase
         $wa = WA::dev()->stacktrace((new Exception('Test')))->test();
         $wa->each(function ($item,$key) {
             // fwrite(STDOUT,$item);
-            $this->assertTrue(json_decode(json: $item,true)['message_status']=="Success");
+            $this->assertTrue(json_decode( $item,true)['message_status']=="Success");
         });
     }
     public function test_sending_repot_to_dev()
