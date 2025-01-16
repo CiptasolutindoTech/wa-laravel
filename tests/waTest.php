@@ -61,8 +61,8 @@ class waTest extends TestCase
         $wa = '';
         $wa = WA::dev()->stacktrace((new Exception('Test')))->test();
         $wa->each(function ($item,$key) {
-            fwrite(STDOUT,$item);
-            $this->assertTrue(json_decode($item,true)['message_status']=="Success");
+            // fwrite(STDOUT,$item);
+            $this->assertTrue(json_decode(json: $item,true)['message_status']=="Success");
         });
     }
     public function test_sending_repot_to_dev()
@@ -73,7 +73,7 @@ class waTest extends TestCase
             $wa = WA::dev()->report($e);
         }
         $wa->each(function ($item,$key) {
-            fwrite(STDOUT,$item);
+            // fwrite(STDOUT,$item);
             $this->assertTrue(json_decode($item,true)['message_status']=="Success");
         });
     }
@@ -85,7 +85,7 @@ class waTest extends TestCase
             $wa = WA::dev()->warning()->report($e);
         }
         $wa->each(function ($item,$key) {
-            fwrite(STDOUT,$item);
+            // fwrite(STDOUT,$item);
             $this->assertTrue(json_decode($item,true)['message_status']=="Success");
         });
     }
@@ -97,7 +97,7 @@ class waTest extends TestCase
             $wa = WA::dev()->info()->report($e);
         }
         $wa->each(function ($item,$key) {
-            fwrite(STDOUT,$item);
+            // fwrite(STDOUT,$item);
             $this->assertTrue(json_decode($item,true)['message_status']=="Success");
         });
     }
@@ -109,7 +109,7 @@ class waTest extends TestCase
             $wa = WA::dev()->error()->report($e);
         }
         $wa->each(function ($item,$key) {
-            fwrite(STDOUT,$item);
+            // fwrite(STDOUT,$item);
             $this->assertTrue(json_decode($item,true)['message_status']=="Success");
         });
     }
