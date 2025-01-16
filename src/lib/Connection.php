@@ -8,21 +8,24 @@ use Illuminate\Support\Facades\Http;
 
 class Connection {
   protected $driver;
+  protected $authToken;
+  protected $appToken;
+  protected $serverUrl;
   public $to;
   function __construct($to=null,$driver='cipta') {
       $this->driver = $driver;
       $this->to = $to;
   }
   protected function url(){
-    if(empty(config("wa.api_url"))){
+    if(empty(($this->serverUrl??config("wa.api_url")))){
         throw new \Exception('Whatsapp api url cant be empty');
     }
-    return config("wa.api_url");
+    return $this->serverUrl??config("wa.api_url");
   }
   protected function sendUrl(){
     if($this->driver==='cipta'){
       return $this->url().'/create-message';
-    }else if($this->driver ==='waSender'){
+    }else if($this->driver ==='ruangWa'){
       return $this->url().'/send_message';
     }else{
       throw new \Exception('Invalid Whatsapp Driver');
@@ -31,7 +34,7 @@ class Connection {
   protected function qrUrl(){
     if($this->driver==='cipta'){
       return $this->url().'/qr';
-    }else if($this->driver ==='waSender'){
+    }else if($this->driver ==='ruangWa'){
       return $this->url().'/send_message';
     }else{
       throw new \Exception('Invalid Whatsapp Driver');
@@ -42,28 +45,28 @@ class Connection {
         case 'cipta':
             $configName = 'app_token';
             break;
-        case 'waSender':
+        case 'ruangWa':
             $configName = 'ruang_wa_token';
             break;
         default:
             $configName = 'app_token';
         break;
     }
-    if(empty(config("wa.{$configName}"))){
+    if(empty(($this->appToken??config("wa.{$configName}")))){
         throw new \Exception("Whatsapp app token can't be empty");
     }
-    return config("wa.{$configName}");
+    return $this->appToken??config("wa.{$configName}");
   }
   public function authToken(){
-    if(empty(config("wa.auth_token"))){
+    if(empty(($this->authToken??config("wa.auth_token")))){
         throw new \Exception("Whatsapp auth token can't be empty");
     }
-    return config('wa.auth_token');
+    return $this->authToken??config('wa.auth_token');
   }
   protected function connect(){
     if($this->driver==='cipta'){
       return new HTTP();
-    }else if($this->driver ==='waSender'){
+    }else if($this->driver ==='ruangWa'){
       return HTTP::withHeaders([ 'Accept'=>'application/json','Content-Type'=>'application/x-www-form-urlencoded']);
     }else{
       throw new \Exception('Invalid Whatsapp Driver');
@@ -72,7 +75,7 @@ class Connection {
   protected function body($message){
     if($this->driver==='cipta'){
       return $this->auth()->merge(['message'=>$message,'to'=>$this->to])->toArray();
-    }else if($this->driver ==='waSender'){
+    }else if($this->driver ==='ruangWa'){
       return $this->auth()->merge(['message'=>$message,'number'=>$this->to])->toArray();
     }else{
       throw new \Exception('Invalid Whatsapp Driver');
@@ -81,7 +84,7 @@ class Connection {
   private function auth(){
     if($this->driver==='cipta'){
       return collect(['appkey'=>$this->appToken(),'authkey'=>$this->authToken()]);
-    }else if($this->driver ==='waSender'){
+    }else if($this->driver ==='ruangWa'){
       return collect(['token'=>$this->appToken()]);
     }else{
       throw new \Exception('Invalid Whatsapp Driver');
@@ -96,7 +99,7 @@ class Connection {
   public function qr(){
     if($this->driver==='cipta'){
       return HTTP::withToken($this->authToken())->post($this->qrUrl(),['id'=> $this->appToken()]);
-    }else if($this->driver ==='waSender'){
+    }else if($this->driver ==='ruangWa'){
       return false;
     }else{
       throw new \Exception('Invalid Whatsapp Driver');
@@ -181,4 +184,40 @@ public function to($phone){
     public function toDev() {
         return $this->dev();
     }
+
+  /**
+   * Set the value of authToken
+   *
+   * @return  self
+   */
+  public function setAuthToken($authToken)
+  {
+    $this->authToken = $authToken;
+
+    return $this;
+  }
+
+  /**
+   * Set the value of appToken
+   *
+   * @return  self
+   */
+  public function setAppToken($appToken)
+  {
+    $this->appToken = $appToken;
+
+    return $this;
+  }
+
+  /**
+   * Set the value of serverUrl
+   *
+   * @return  self
+   */
+  public function setServerUrl($serverUrl)
+  {
+    $this->serverUrl = $serverUrl;
+
+    return $this;
+  }
 }
