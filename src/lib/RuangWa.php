@@ -3,7 +3,7 @@ namespace Cst\WALaravel\lib;
 use Illuminate\Support\Facades\Http;
 
 class RuangWa extends Connection {
-    protected $driver='waSender';
+    protected $driver='ruangWa';
     /**
     * Get the value of driver
     */

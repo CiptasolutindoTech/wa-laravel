@@ -14,6 +14,7 @@ class Development
     public $title;
     public $header;
     public $stacktrace;
+    public $formatHeader;
     /**
      * Summary of __construct
      * @param \Cst\WALaravel\lib\Connection&\Mockery\LegacyMockInterface&\Mockery\MockInterface $connection
@@ -21,9 +22,18 @@ class Development
      */
     public function __construct($connection)
     {
+        $connection = $connection->setAuthToken(config("wa"));
+        $connection = $connection->setAppToken(config("wa"));
+        if($connection->getDriver()=="ruangWa"){
+
+        }
         $this->connection = $connection;
+
         if (empty(config("wa.dev_numbers"))) {
-            throw new \Exception("Dev Number required");
+            throw new Exception("Dev Number required");
+        }
+        if(empty(config("wa.dev_numbers"))){
+
         }
     }
     public function report( $message=null)
@@ -70,6 +80,11 @@ class Development
         $this->header = ($header??$this->formSourceHeader());
         return $this;
     }
+    public function addCompactHeader()
+    {
+        $this->header = $this->formCompactSourceHeader();
+        return $this;
+    }
     /**
      * generaye source at header
      * @return string
@@ -82,6 +97,18 @@ class Development
             $appDebug = config('app.debug');
             return "----------------------\nApp Name  : $appName\nUrl        : $url\nEnv        : $appEnv\nDebug    : $appDebug\n----------------------";
     }
+    /**
+     * generaye source at header
+     * @return string
+     */
+    public function formCompactSourceHeader()
+    {
+            $appName = config('app.name');
+            $url = config('app.url');
+            $appEnv = config('app.env');
+            $appDebug = config('app.debug');
+            return "|{$url}|\n-|{$appName}|Env:{$appEnv}|Debug:{$appDebug}|-";
+    }
     public function formMsg($message,$title = '🚨❌☠️   Error    ☠️❌🚨', $stacktrace = null)
     {
         $title = FormatMsg::bold($this->title ?? $title);
@@ -90,7 +117,7 @@ class Development
             $stacktrace = FormatMsg::bold($message->getTraceAsString());
             $message = $message->getMessage();
         }
-        return "$title :\n$this->header\n$message\n$stacktrace";
+        return "{$title} :\n{$this->header}\n{$message}\n{$stacktrace}";
     }
     public function test()
     {
@@ -114,9 +141,9 @@ class Development
      */
     public function info()
     {
-        return tap($this, function ($instance) {
-            $instance->title = config("dev_info_message_title", "ℹ️ Info ℹ️");
-        });
+        $this->title = config("dev_info_message_title", "ℹ️ Info ℹ️");
+        return $this;
+
     }
     /**
      * Set the title to info
@@ -125,9 +152,9 @@ class Development
      */
     public function error()
     {
-        return tap($this, function ($instance) {
-            $instance->title = config("dev_error_message_title", "🚨❌☠️   Error    ☠️❌🚨");
-        });
+        $this->title = config("dev_error_message_title", "🚨❌☠️   Error    ☠️❌🚨");
+        return $this;
+
     }
     /**
      * Set the title to warning
@@ -136,9 +163,9 @@ class Development
      */
     public function warning()
     {
-        return tap($this, function ($instance) {
-            $instance->title = config("dev_warning_message_title", "⚠️ Warning ⚠️");
-        });
+        $this->title = config("dev_warning_message_title", "⚠️ Warning ⚠️");
+        return $this;
+
     }
 
     /**
