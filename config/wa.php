@@ -36,7 +36,7 @@ return [
     |
     */
 
-    'ruang_wa_url' => env('RUANG_WA_URL',"https://app.ruangwa.id/api/"),
+    'ruang_wa_url' => env('RUANG_WA_URL',"https://app.ruangwa.id/api"),
 
     /*
     |--------------------------------------------------------------------------

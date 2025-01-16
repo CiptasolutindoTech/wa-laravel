@@ -12,8 +12,7 @@ class Connection {
   protected $appToken;
   protected $serverUrl;
   public $to;
-  function __construct($to=null,$driver='cipta') {
-      $this->driver = $driver;
+  function __construct($to=null) {
       $this->to = $to;
   }
   protected function url(){
@@ -94,7 +93,11 @@ class Connection {
         if(empty($this->to)){
             throw new \Exception("Phone number can't be empty");
         }
-        return HTTP::post($this->sendUrl(),$this->body($message));
+        // return var_dump($this->body($message));
+        if($this->driver==='cipta'){
+            return HTTP::post($this->sendUrl(),$this->body($message));
+        }
+        return HTTP::asForm()->post($this->sendUrl(),$this->body($message));
   }
   public function qr(){
     if($this->driver==='cipta'){
