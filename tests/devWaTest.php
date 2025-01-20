@@ -8,7 +8,7 @@ use Orchestra\Testbench\TestCase;
 use Orchestra\Testbench\Bootstrap\LoadConfiguration;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 
-class ciptaWaTest extends TestCase
+class devWaTest extends TestCase
 {
         /**
      * Get package providers.
@@ -29,16 +29,12 @@ class ciptaWaTest extends TestCase
         $app->configPath(__DIR__.'/../src/config');
         $app->bootstrapWith([LoadEnvironmentVariables::class,LoadConfiguration::class]);
         parent::getEnvironmentSetUp($app);
-        config()->set('wa.app_token', env("WA_APP_KEY"));
-        config()->set('wa.auth_token', env("WA_AUTH_KEY"));
         config()->set('wa.dev_numbers', env("DEV_PHONE_NUMBERS"));
         config()->set('wa.api_url', env("WA_SERVER_API_URL"));
-        config()->set('wa.test_numbers', env("TEST_PHONE_NUMBERS"));
-        config()->set('wa.ruang_wa_token', env("RUANG_WA_TOKEN"));
-        config()->set('wa.ruang_wa_url', env('RUANG_WA_URL',"https://app.ruangwa.id/api"));
         config()->set('wa.app_dev_token', env('WA_DEV_APP_KEY'));
         config()->set('wa.auth_dev_token', env('WA_DEV_AUTH_KEY'));
         config()->set('wa.dev_driver', "cipta");
+
         config()->set('app.url', env("APP_URL"));
         config()->set('app.name', env("APP_NAME"));
         config()->set('app.env', env("APP_ENV"));
@@ -56,10 +52,13 @@ class ciptaWaTest extends TestCase
         // fwrite(STDOUT,$wa);
         $this->assertTrue($wa=="cipta");
     }
-    public function test_forces_driver()
+    public function test_dev_msg()
     {
-        $wa = WA::cipta()->getDriver();
-        // fwrite(STDOUT,$wa);
-        $this->assertTrue($wa=="cipta");
+        $wa = WA::dev()->send("test message wa library, dev chanel");
+        $wa->each(function ($item,$key) {
+            fwrite(STDOUT,$item);
+            // $this->assertTrue(true);
+            $this->assertTrue(json_decode($item,true)['message_status']=="Success");
+        });
     }
 }

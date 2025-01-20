@@ -22,10 +22,15 @@ class Development
      */
     public function __construct($connection)
     {
-        $connection = $connection->setAuthToken(config("wa"));
-        $connection = $connection->setAppToken(config("wa"));
-        if($connection->getDriver()=="ruangWa"){
-
+        $connection = $connection->setDriver(config("wa.dev_driver"));
+        if (!empty(config("wa.auth_dev_token"))) {
+            $connection = $connection->setAuthToken(config("wa.auth_dev_token"));
+        }
+        if (!empty(config("wa.app_dev_token"))) {
+            $connection = $connection->setAppToken(config("wa.app_dev_token"));
+        }
+        if (!empty(config("wa.dev_url"))) {
+            $connection = $connection->setServerUrl(config("wa.dev_url"));
         }
         $this->connection = $connection;
 
@@ -48,18 +53,18 @@ class Development
     }
     public function send($message=null)
     {
-        $return = '';
+        $return = collect();
         $this->message = $this->formMsg($message);
         foreach (explode(',', config("wa.dev_numbers")) as $value) {
-            $return .= $this->connection->to($value)->msg(Str::limit($message??$this->message,config("wa.string_limit",995)));
+            $return->push($this->connection->to($value)->msg(Str::limit($message??$this->message,config("wa.string_limit",995))));
         }
         return $return;
     }
     public function sendPlain($message=null)
     {
-        $return = '';
+        $return = collect();
         foreach (explode(',', config("wa.dev_numbers")) as $value) {
-            $return .= $this->connection->to($value)->msg(Str::limit($message??$this->message,config("wa.string_limit",995)));
+            $return->push($this->connection->to($value)->msg(Str::limit($message??$this->message,config("wa.string_limit",995))));
         }
         return $return;
     }
