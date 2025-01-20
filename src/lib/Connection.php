@@ -15,7 +15,7 @@ class Connection {
   function __construct($to=null) {
       $this->to = $to;
   }
-  protected function url(){
+  public function url(){
     if(empty(($this->serverUrl??config("wa.api_url")))){
         throw new \Exception('Whatsapp api url cant be empty');
     }

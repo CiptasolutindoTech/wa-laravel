@@ -7,10 +7,10 @@ class RuangWa extends Connection {
     /**
     * Get the value of driver
     */
-    protected function url(){
-        if(empty(config("wa.ruang_wa_url"))){
+    public function url(){
+        if($this->serverUrl??empty(config("wa.ruang_wa_url"))){
             throw new \Exception('Whatsapp api url cant be empty');
         }
-        return config("wa.ruang_wa_url");
+        return $this->serverUrl??config("wa.ruang_wa_url");
       }
 }
