@@ -52,4 +52,19 @@ Basic usage:
     WA::msg('Hello');
     // send default test message to test number
     WA::test();
+    // Multi messagea
+    WA::msg(
+        [
+            "08123456781"=>"Hello Person 1",
+            "08123456781"=>"Hello Person 2",
+            ...
+        ]);
+    WA::msg(
+        [
+            ["to"=>"08123456781","msg"=>"Hello Person 1"],
+            ["to"=>"08123456781","msg"=>"Hello Person 2"],
+            ...
+        ]);
+    WA::to(["08123456781","08123456782","08123456783"])
+        ->msg("Hello Everyone");
 ```

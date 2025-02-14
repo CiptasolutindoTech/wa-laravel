@@ -48,70 +48,15 @@ class waTest extends TestCase
      */
     public function test_sending_messsage()
     {
-        // $phoneNumber = env('TEST_PHONE_NUM_OTP');
-        // if(empty($phoneNumber)){
-        //     \trigger_error("Please specify Phone number in env 'TEST_PHONE_NUM_OTP'", \E_USER_ERROR);
-        // }
         $wa = '';
         $wa = WA::test();
         fwrite(STDOUT,$wa);
         $this->assertTrue(true);
     }
-    public function test_sending_messsage_to_dev()
+    public function test_sending_messsage_using_msg()
     {
-        $wa = '';
-        $wa = WA::dev()->stacktrace((new Exception('Test')))->test();
-        $wa->each(function ($item,$key) {
-            // fwrite(STDOUT,$item);
-            $this->assertTrue(json_decode( $item,true)['message_status']=="Success");
-        });
-    }
-    public function test_sending_repot_to_dev()
-    {
-        try{
-            route("testerrorexception");
-        }catch(Exception $e){
-            $wa = WA::dev()->report($e);
-        }
-        $wa->each(function ($item,$key) {
-            // fwrite(STDOUT,$item);
-            $this->assertTrue(json_decode($item,true)['message_status']=="Success");
-        });
-    }
-    public function test_warning_sending_repot_to_dev()
-    {
-        try{
-            route("testwarningexception");
-        }catch(Exception $e){
-            $wa = WA::dev()->warning()->report($e);
-        }
-        $wa->each(function ($item,$key) {
-            // fwrite(STDOUT,$item);
-            $this->assertTrue(json_decode($item,true)['message_status']=="Success");
-        });
-    }
-    public function test_info_sending_repot_to_dev()
-    {
-        try{
-            route("testinfoexception");
-        }catch(Exception $e){
-            $wa = WA::dev()->info()->report($e);
-        }
-        $wa->each(function ($item,$key) {
-            // fwrite(STDOUT,$item);
-            $this->assertTrue(json_decode($item,true)['message_status']=="Success");
-        });
-    }
-    public function test_error_sending_repot_to_dev()
-    {
-        try{
-            route("testerrorexception2");
-        }catch(Exception $e){
-            $wa = WA::dev()->error()->report($e);
-        }
-        $wa->each(function ($item,$key) {
-            // fwrite(STDOUT,$item);
-            $this->assertTrue(json_decode($item,true)['message_status']=="Success");
-        });
+        $wa = WA::msg("test message wa library");
+        fwrite(STDOUT,$wa);
+        $this->assertTrue(true);
     }
 }

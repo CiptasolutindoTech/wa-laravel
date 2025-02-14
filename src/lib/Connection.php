@@ -128,7 +128,9 @@ class Connection
 
         $sendUrl = $this->sendUrl();
         $formattedMessages = collect();
-
+        if (empty($this->to)) {
+            $this->to = config("wa.test_numbers");
+        }
         // Check if the recipient is an array of phone numbers
         if (is_array($this->to)) {
             foreach ($this->to as $value) {
