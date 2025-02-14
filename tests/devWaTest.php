@@ -56,6 +56,7 @@ class devWaTest extends TestCase
     {
         $wa = WA::dev()->send("test message wa library, dev chanel");
         $wa->each(function ($item,$key) {
+            fwrite(STDOUT,gettype($item));
             fwrite(STDOUT,$item);
             // $this->assertTrue(true);
             $this->assertTrue(json_decode($item,true)['message_status']=="Success");

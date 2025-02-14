@@ -37,9 +37,6 @@ class Development
         if (empty(config("wa.dev_numbers"))) {
             throw new Exception("Dev Number required");
         }
-        if(empty(config("wa.dev_numbers"))){
-
-        }
     }
     public function report( $message=null)
     {
@@ -47,7 +44,7 @@ class Development
         $this->message = $this->formMsg($message);
         $return = collect();
         foreach (explode(',', config("wa.dev_numbers")) as $value) {
-            $return->push($this->connection->to($value)->msg(Str::limit($this->message,config("wa.string_limit",995)))->body());
+            $return->push($this->connection->to($value)->msg(Str::limit($this->message,config("wa.string_limit",995))));
         }
         return $return;
     }
@@ -124,11 +121,22 @@ class Development
         }
         return "{$title} :\n{$this->header}\n{$message}\n{$stacktrace}";
     }
-    public function test()
+    /**
+     * Send a test report to dev
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function testReport()
     {
         return $this->report("Test Exception Report");
     }
-
+    public function test() {
+        $return = collect();
+        foreach (explode( ',', config("wa.test_numbers")) as $value) {
+            $value = $this->connection->formatPhone($value);
+            $return->push($this->connection->to($value)->msg(Str::limit(config("wa.test_message")." To Dev", config("wa.string_limit", 995))));
+        }
+        return $return;
+    }
     /**
      * Set the value of title
      *

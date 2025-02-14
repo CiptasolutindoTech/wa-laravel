@@ -32,6 +32,7 @@ class waTest extends TestCase
         config()->set('wa.app_token', env("WA_APP_KEY"));
         config()->set('wa.auth_token', env("WA_AUTH_KEY"));
         config()->set('wa.dev_numbers', env("DEV_PHONE_NUMBERS"));
+        config()->set('wa.dev_driver', "cipta");
         config()->set('wa.api_url', env("WA_SERVER_API_URL"));
         config()->set('wa.test_numbers', env("TEST_PHONE_NUMBERS"));
         config()->set('app.url', env("APP_URL"));

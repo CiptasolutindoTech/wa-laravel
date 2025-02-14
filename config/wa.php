@@ -93,7 +93,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Whatsapp app and auth key for wacipta
+    | Whatsapp app and auth
     |--------------------------------------------------------------------------
     |
     | Phone number for testing and/or dev can accept array or string
