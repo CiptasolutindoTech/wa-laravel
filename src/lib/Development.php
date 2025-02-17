@@ -131,7 +131,7 @@ class Development
     }
     public function test() {
         $return = collect();
-        foreach (explode( ',', config("wa.test_numbers")) as $value) {
+        foreach (explode( ',', config("wa.dev_numbers")) as $value) {
             $value = $this->connection->formatPhone($value);
             $return->push($this->connection->to($value)->msg(Str::limit(config("wa.test_message")." To Dev", config("wa.string_limit", 995))));
         }
