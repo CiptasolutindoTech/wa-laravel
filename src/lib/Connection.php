@@ -194,11 +194,12 @@ class Connection
         $phones = str_replace(['-', ' ', '/'], '', $phones);
         if (Str::is('+*', $phones)) {
             $phones = str_replace('+', '', $phones);
-        } elseif (Str::is('08*', $phones)) {
+        }
+        if (Str::is('08*', $phones)) {
             $phones = Str::replaceFirst('0', '62', $phones);
         }
-        if (strlen($phones) < 10) {
-            throw new \Exception("Phone Number Invalid : {$phones}");
+        if (!Str::is('62*', $phones) || !is_numeric($phones) || strlen($phones) < 10) {
+            throw new \Exception("Phone Number Invalid: {$phones}");
         }
         return $phones;
     }
