@@ -40,7 +40,9 @@ class Development
     }
     public function report( $message=null)
     {
-        $this->header = $this->formSourceHeader();
+        if(empty($this->header)){
+            $this->header = $this->formSourceHeader();
+        }
         $this->message = $this->formMsg($message);
         $return = collect();
         foreach (explode(',', config("wa.dev_numbers")) as $value) {
