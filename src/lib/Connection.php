@@ -14,16 +14,17 @@ class Connection
     protected $appToken;
     protected $serverUrl;
     public $to;
+    protected $connection;
     function __construct($to = null)
     {
         $this->to = $to;
     }
     public function url()
     {
-        if (empty(($this->serverUrl ?? config("wa.api_url")))) {
+        if (empty(($this->serverUrl ?? config("wa.{$this->connection}.api_url",config("wa.api_url"))))) {
             throw new \Exception('Whatsapp api url cant be empty');
         }
-        return $this->serverUrl ?? config("wa.api_url");
+        return $this->serverUrl ?? config("wa.{$this->connection}.api_url",config("wa.api_url"));
     }
     protected function sendUrl()
     {
@@ -49,36 +50,30 @@ class Connection
     {
         switch ($this->driver) {
             case 'cipta':
-                $configName = 'app_token';
-                break;
+            $configName = 'app_token';
+            break;
             case 'ruangWa':
-                $configName = 'ruang_wa_token';
-                break;
+            $configName = 'ruang_wa_token';
+            break;
             default:
-                $configName = 'app_token';
-                break;
+            $configName = 'app_token';
+            break;
         }
-        if (empty(($this->appToken ?? config("wa.{$configName}")))) {
+        $token = config("wa.{$this->connection}.{$configName}",config("wa.{$configName}"));
+        if ($this->driver === 'ruangWa' && empty($token)) {
+            $token = config("wa.{$this->connection}.app_token",config("wa.{$configName}"));
+        }
+        if (empty(($this->appToken ?? $token))) {
             throw new \Exception("Whatsapp app token can't be empty");
         }
-        return $this->appToken ?? config("wa.{$configName}");
+        return $this->appToken ?? $token;
     }
     public function authToken()
     {
-        if (empty(($this->authToken ?? config("wa.auth_token")))) {
+        if (empty(($this->authToken ?? config("wa.connections.{$this->connection}.auth_token",config("wa.auth_token"))))) {
             throw new \Exception("Whatsapp auth token can't be empty");
         }
-        return $this->authToken ?? config('wa.auth_token');
-    }
-    protected function connect()
-    {
-        if ($this->driver === 'cipta') {
-            return new HTTP();
-        } else if ($this->driver === 'ruangWa') {
-            return HTTP::withHeaders(['Accept' => 'application/json', 'Content-Type' => 'application/x-www-form-urlencoded']);
-        } else {
-            throw new \Exception('Invalid Whatsapp Driver');
-        }
+        return $this->authToken ?? config("wa.connections.{$this->connection}.auth_token",config("wa.auth_token"));
     }
     protected function body($message, $to = null)
     {
@@ -129,7 +124,7 @@ class Connection
         $sendUrl = $this->sendUrl();
         $formattedMessages = collect();
         if (empty($this->to)) {
-            $this->to = config("wa.test_numbers");
+            $this->to = $this->testNumbers();
         }
         // Check if the recipient is an array of phone numbers
         if (is_array($this->to)) {
@@ -253,18 +248,18 @@ class Connection
     {
         if (empty($this->to)) {
             $return = collect();
-            foreach (explode(',', config("wa.test_numbers")) as $value) {
+            foreach ($this->testNumbers() as $value) {
                 $value = $this->formatPhone($value);
-                $return->push($this->to($value)->msg(Str::limit(config("wa.test_message"), config("wa.string_limit", 995))));
+                $return->push($this->to($value)->msg(Str::limit(config("wa.{$this->connection}.test_message",config("wa.test_message")), config("wa.{$this->connection}.string_limit",config("wa.string_limit", 995)))));
             }
             return $return;
         }
-        return $this->msg(config('wa.test_message'));
+        return $this->msg(config("wa.{$this->connection}.test_message",config("wa.test_message")));
     }
     public function inspire()
     {
         if (empty($this->to)) {
-            $this->to = $this->formatPhone(config("wa.test_numbers"));
+            $this->to = $this->testNumbers();
         }
         return $this->msg(Inspiring::quote());
     }
@@ -311,5 +306,53 @@ class Connection
         $this->serverUrl = $serverUrl;
 
         return $this;
+    }
+
+    /**
+     * Get the value of connection data
+     */
+    public function getConnectionConfig()
+    {
+        return config("wa.{$this->connection}");
+    }
+    /**
+     * Get the value of connection
+     */
+    public function getConnection()
+    {
+        return $this->connection;
+    }
+
+    /**
+     * Set the value of connection
+     *
+     * @return  self
+     */
+    public function setConnection($connection)
+    {
+        $this->connection = $connection;
+
+        return $this;
+    }
+    /**
+     * Set the value of connection
+     *
+     * @return  self
+     */
+    public function connect($connection)
+    {
+        $this->connection = $connection;
+
+        return $this;
+    }
+    public function toArray($string,$separator = ',') {
+        return explode($separator, string: $string);
+    }
+    /**
+     * Get Test Number
+     * @return array
+     */
+    public function testNumbers() {
+        return $this->toArray(config("wa.{$this->connection}.test_numbers",config("wa.test_numbers")));
     }
 }
