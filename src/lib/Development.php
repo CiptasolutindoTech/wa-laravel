@@ -11,6 +11,7 @@ class Development
 {
     private $connection;
     public $message;
+    public $devNumberIndex;
     public $title;
     public $header;
     public $stacktrace;
@@ -38,17 +39,31 @@ class Development
             throw new Exception("Dev Number required");
         }
     }
-    public function report( $message=null)
+    public function report($message=null)
     {
         if(empty($this->header)){
             $this->header = $this->formSourceHeader();
         }
         $this->message = $this->formMsg($message);
         $return = collect();
-        foreach (explode(',', config("wa.dev_numbers")) as $value) {
+        $devNumbers =explode(',', config("wa.dev_numbers"));
+        if(!empty($this->devNumberIndex)){
+            $devNumbers = array_intersect_key($devNumbers, array_flip($this->devNumberIndex));
+        }
+        foreach ($devNumbers as $value) {
             $return->push($this->connection->to($value)->msg(Str::limit($this->message,config("wa.string_limit",995))));
         }
         return $return;
+    }
+    /**
+     * Send message to only one or more dev number
+     *
+     * @param int|array $devNumberIndex
+     * @return void
+     */
+    public function onlySendTo($devNumberIndex) {
+        $this->devNumberIndex = $devNumberIndex;
+        return $this;
     }
     public function send($message=null)
     {
@@ -85,6 +100,11 @@ class Development
         return $this;
     }
     public function addCompactHeader()
+    {
+        $this->header = $this->formCompactSourceHeader();
+        return $this;
+    }
+    public function cph()
     {
         $this->header = $this->formCompactSourceHeader();
         return $this;
@@ -152,34 +172,42 @@ class Development
     /**
      * Set the title to info
      *
-     * @return  self
+     * @return  self|\Illuminate\Support\Collection
      */
-    public function info()
+    public function info($message=null)
     {
         $this->title = config("dev_info_message_title", "ℹ️ Info ℹ️");
-        return $this;
-
+        if(empty($message)){
+            return $this;
+        }
+        return $this->report($message);
     }
     /**
      * Set the title to info
      *
-     * @return  self
+     * @return  self|\Illuminate\Support\Collection
      */
-    public function error()
+    public function error($message=null)
     {
         $this->title = config("dev_error_message_title", "🚨❌☠️   Error    ☠️❌🚨");
-        return $this;
+         if(empty($message)){
+            return $this;
+        }
+        return $this->report($message);
 
     }
     /**
      * Set the title to warning
      *
-     * @return  self
+     * @return  self|\Illuminate\Support\Collection
      */
-    public function warning()
+    public function warning($message=null)
     {
         $this->title = config("dev_warning_message_title", "⚠️ Warning ⚠️");
-        return $this;
+         if(empty($message)){
+            return $this;
+        }
+        return $this->report($message);
 
     }
 
