@@ -17,9 +17,7 @@ return [
     | WA Driver
     |--------------------------------------------------------------------------
     |
-    | Wa driver for auth or normal
-    | avaible driver : cipta,ruangwa
-    | dev_driver : diver that used for dev() function
+    | default driver for WA
     |
     */
 
@@ -27,6 +25,24 @@ return [
     'sandbox_driver' => 'cipta',
     'dev_driver' => 'cipta',
 
+    'connections' => [
+        'main' => [
+            'driver' => env('WA_DRIVER','cipta'),
+            'api_url' => env('WA_SERVER_API_URL'),
+            'app_token' => env('WA_APP_KEY'),
+            'auth_token' => env('WA_AUTH_KEY'),
+            'test_numbers' => env('TEST_PHONE_NUMBERS'),
+            'test_message' => "Test WA ".env('APP_NAME'),
+        ],
+        'sandbox' => [
+            'driver' => env('WA_DRIVER','cipta'),
+            'api_url' => env('WA_SERVER_API_URL'),
+            'app_token' => env('WA_SANDBOX_APP_KEY'),
+            'auth_token' => env('WA_SANDBOX_AUTH_KEY'),
+            'test_numbers' => env('TEST_PHONE_NUMBERS'),
+            'test_message' => "Test WA ".env('APP_NAME'),
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | Ruang WA Url
