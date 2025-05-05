@@ -160,9 +160,9 @@ class Connection
         $responses = collect();
         foreach ($formattedMessages as $msg) {
             if($this->driver === 'cipta'){
-                $responses->push(HTTP::post($sendUrl, $msg)->body());
+                $responses->push(HTTP::withHeaders(['Accept' => 'application/json'])->post($sendUrl, $msg)->body());
             }elseif($this->driver === 'ruangWa'){
-                $responses->push(HTTP::asForm()->post($sendUrl, $msg)->body());
+                $responses->push(HTTP::withHeaders(['Accept' => 'application/json'])->asForm()->post($sendUrl, $msg)->body());
             }
         }
         return $responses->count() == 1 ? $responses->first() : $responses;
@@ -309,6 +309,26 @@ class Connection
     public function setServerUrl($serverUrl)
     {
         $this->serverUrl = $serverUrl;
+
+        return $this;
+    }
+    /**
+     * Set conection config
+     * @param array|string $config appKey|['appKey','authKey','url']
+     * @param mixed $authKey
+     * @param mixed $url
+     * @return $this;
+     */
+    public function config($config=null,$authKey=null,$url=null){
+        $appKey = $config;
+        if(is_array($config)){
+            $appKey = $config[0];
+            $authKey = $config[1];
+            $url = $config[2];
+        }
+        $this->appToken = $appKey;
+        $this->authToken = $authKey;
+        $this->serverUrl = $url;
 
         return $this;
     }
