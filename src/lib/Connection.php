@@ -346,7 +346,7 @@ class Connection
         return $this;
     }
     public function toArray($string,$separator = ',') {
-        return explode($separator, string: $string);
+        return explode($separator, $string);
     }
     /**
      * Get Test Number
