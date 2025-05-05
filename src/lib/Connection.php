@@ -362,7 +362,7 @@ class Connection
      * @param mixed $url
      * @return $this;
      */
-    public function config($config=null,$authKey=null,$url=null){
+    public function config($config,$authKey=null,$url=null){
         $appKey = $config;
         if(is_array($config)){
             $appKey = $config[0];
