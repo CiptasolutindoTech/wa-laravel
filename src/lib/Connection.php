@@ -5,6 +5,7 @@ namespace Cst\WALaravel\lib;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class Connection
@@ -374,5 +375,33 @@ class Connection
         $this->serverUrl = $url;
 
         return $this;
+    }
+    /**
+     * get status of whatapp response
+     * @param string $response
+     * @param bool $wantBool
+     * @return bool|Collection [status => bool,  message => string, ...]
+     * example message :
+     *  The receiver number is not exists.
+     */
+    public static function status($response,$wantBool = false) {
+        $response = json_decode($response);
+        var_dump($response);
+        if(empty($response)){
+            return false;
+        }
+        if($wantBool){
+            if(isset($response->error) && $response->error){
+                return false;
+            }else {
+                return true;
+            }
+        }else{
+            if(isset($response->error) && $response->error){
+                return collect($response)->put('status', false)->put('message_status',$response->message_status ??'Failed');
+            }else {
+                return collect($response)->put('status', true)->put('message', $response->message ?? 'Sent');
+            }
+        }
     }
 }
