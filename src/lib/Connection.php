@@ -386,7 +386,6 @@ class Connection
      */
     public static function status($response,$wantBool = false) {
         $response = json_decode($response);
-        var_dump($response);
         if(empty($response)){
             return false;
         }
