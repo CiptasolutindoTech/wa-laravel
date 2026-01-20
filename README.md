@@ -22,13 +22,14 @@ Curently support for laravel 8+ and php 7.3+
         composer require cst/wa-laravel
     ```
 
-3. Add api url,secret and auth optionaly you can add default phone number for testing
+3. Add api url,secret and auth optionaly, default phone number for testing and dev number for dev() function
 
     ```txt
         WA_SERVER_API_URL=https://example.com/api
         WA_APP_KEY=xxxx-xxxx-xxxx-xxxx-xxxx
         WA_AUTH_KEY=xxxxxxx
         TEST_PHONE_NUMBERS=08123456789
+        DEV_PHONE_NUMBERS=08123456789
     ```
 
 4. Publish Assets if needed:
