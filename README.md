@@ -1,7 +1,8 @@
 # Laravel WA Helper
 
 A helper for sending wa for laravel designed for ciptasolutindo and team.
-Curently support for laravel 8+ and php 7.3+
+Curently support for laravel 8+ and php 7.3+, This library also support sending wa with ruangwa.
+Available driver : cipta , ruangWa
 
 ## Installation
 
@@ -30,6 +31,9 @@ Curently support for laravel 8+ and php 7.3+
         WA_AUTH_KEY=xxxxxxx
         TEST_PHONE_NUMBERS=08123456789
         DEV_PHONE_NUMBERS=08123456789
+        #for ruangwa
+        RUANG_WA_TOKEN=xxxxxxxxxxxxxxxxxxxxxxx
+
     ```
 
 4. Publish Assets if needed:
@@ -53,7 +57,7 @@ Basic usage:
     WA::msg('Hello');
     // send default test message to test number
     WA::test();
-    // Multi messagea
+    // Multi message
     WA::msg(
         [
             "08123456781"=>"Hello Person 1",
@@ -68,4 +72,32 @@ Basic usage:
         ]);
     WA::to(["08123456781","08123456782","08123456783"])
         ->msg("Hello Everyone");
+
+```
+
+## Using [ruangWa](https://ruangwa.id/)
+
+Before using any function you can specify driver like :
+
+```php
+
+  use Cst\WALaravel\WA; // at the top of the file
+
+    // send message
+    WA::driver('ruangWa')->to("08123456789")->msg('Hello');
+    // send default test message
+    WA::ruangWa()->to("08123456789")->test();
+    // send message to test number
+    WA::cipta()->msg('Hello');
+    // send default test message to test number
+    WA::driver('cipta')->test();
+
+```
+
+Or On env set the default driver to:
+
+```env
+
+WA_DRIVER=ruangWa
+
 ```
